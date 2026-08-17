@@ -1,30 +1,54 @@
-# Projeto de Desenvolvimento de Software
+# PortfolioDev
 
-Este projeto demonstra minhas habilidades como desenvolvedora de software júnior. Desenvolvi a aplicação usando JavaScript e MongoDB, com Node.js para criar uma API RESTful funcional com Express. A aplicação inclui várias funcionalidades no frontend e um backend robusto para gerenciar e exibir projetos.
+Portfólio pessoal full-stack com galeria de mídia e sistema de feedback, com foco
+em explorar armazenamento de arquivos binários no MongoDB (GridFS) e streaming de
+vídeo via HTTP Range requests.
 
-## Testes com Postman
-Utilizei o Postman para testar as funcionalidades da API RESTful desenvolvida. Com o Postman, pude realizar operações de POST, GET, PUT, e DELETE para verificar o funcionamento das endpoints da API e garantir que o backend estivesse respondendo corretamente às solicitações.
+## Destaques técnicos
 
-## Tecnologias Utilizadas
+- **Streaming de vídeo com suporte a HTTP Range** — implementação manual de
+  respostas `206 Partial Content` em chunks, permitindo que o navegador faça
+  seek no vídeo sem baixar o arquivo inteiro.
+- **Armazenamento binário via GridFS** — imagens e vídeos são guardados
+  diretamente no MongoDB, usando o driver nativo com buckets dedicados.
+- **Feedback persistido via Mongoose**, com schema próprio.
 
-- **JavaScript**: Linguagem principal do projeto.
-- **Node.js**: Utilizado para criar a API RESTful.
-- **MongoDB**: Banco de dados NoSQL.
-- **Express**: Framework para construção da API.
-- **Bootstrap/Sass**: Para estilização e responsividade.
-- **Google Cloud**: Hospedagem e implantação.
-- **Docker**: Containerização da aplicação.
+## Tecnologias
 
-## Funcionalidades
+- Node.js + Express
+- MongoDB — Mongoose (feedback) e driver nativo + GridFS (mídia binária)
+- Multer (upload em memória)
+- HTML/JS vanilla + Bootstrap 5 + SCSS no frontend
+- Docker, com deploy realizado no Google Cloud Run *(atualmente fora do ar)*
 
-- **Frontend**:
-  - Troca de cor do tema.
-  - Botão "Voltar ao Topo".
-  - Redirecionamento de links.
-  
-- **Backend**:
-  - CRUD completo para adicionar, editar, listar e remover projetos.
-  - API RESTful com os métodos POST, GET, PATCH e DELETE.
-  
-- **Feedback**:
-  - Funcionalidade para o usuário enviar comentários sobre o trabalho.
+## Endpoints principais
+
+- `POST /feedback` — envio de feedback
+- `POST /upload`, `GET /files`, `PUT /files/index/:index`, `DELETE /files/index/:index` — gestão de imagens
+- `POST /upload/video`, `GET /videos`, `PUT /videos/index/:index`, `DELETE /videos/index/:index` — gestão de vídeos, com streaming via Range requests
+
+## Como rodar localmente
+
+\`\`\`bash
+npm install
+\`\`\`
+
+Crie um arquivo `.env` na raiz do Backend com:
+\`\`\`
+MONGODB_URI=<sua_string_de_conexão>
+DB_NAME=<nome_do_banco>
+PORT=<porta>
+\`\`\`
+
+\`\`\`bash
+npm start
+\`\`\`
+
+## Limitações conhecidas
+
+Este foi um projeto de estudo focado em explorar as tecnologias acima — algumas
+lacunas conscientes, que resolveria de forma diferente hoje:
+
+- Sem autenticação — endpoints de escrita/exclusão são públicos
+- Sem testes automatizados (validação feita manualmente via Postman)
+- Recursos identificados por índice posicional, não por ID único
